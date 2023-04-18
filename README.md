@@ -1,4 +1,6 @@
 # Work in Progress!
+*See dev branch for current status of development*
+
 The idea is to adapt [vadnet](https://github.com/hcmlab/vadnet) to work with the newest version of python (3.10) and tensorflow (2.12) instead of tf1.x. Moreover, we remove the cmd files for command line usage (only on windows) for a package approach s.t. vadnet can be imported and used as a VAD system in any python project.
 
 Thanks to [Liam Schoneveld](https://github.com/nlml) for previously adapting vadnet to Linux and Mac and providing a predict_audio script. This work builds on [his vadnet fork](https://github.com/nlml/vadnet).
