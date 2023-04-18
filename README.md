@@ -1,28 +1,9 @@
-# This is a fork of VadNet by @nlml for those just looking to do inference in Python
+# Work in Progress!
+The idea is to adapt [vadnet](https://github.com/hcmlab/vadnet) to work with the newest version of python (3.11) and tensorflow (2.12) instead of tf1.x. Moreover, we remove the cmd files for command line usage (only on windows) for a package approach s.t. vadnet can be imported and used as a VAD system in any python project.
 
-There are two methods for doing inference/predicting voice activity in audio data.
+Thanks to [Liam Schoneveld](https://github.com/nlml) for previously adapting vadnet to Linux and Mac and providing a predict_audio script. This work builds on [his vadnet fork](https://github.com/nlml/vadnet).
 
-## Method 1: as a Docker/Flask server
-
-Since it's difficult to get this to work in TF2.0, I decided to host it locally as a Docker/Flask server running TF1.15. You just need to build the docker image, start the server, then you can query it with np arrays of audio data using `requests`. To do this:
-
-1. Clone this repo, then cd into the root: `cd /path/to/vadnet`
-2. Build the docker image `docker build -t vadnet .`
-3. Start the Flask server in the Docker container `docker run -p 5001:5001 vadnet`
-4. Install the vadnet package locally `pip install -e vadnet-pkg/` (this is optional - you could just extract 48khz audio arrays using `librosa` or similar).
-5. Run `python example_server_usage.py` (or similar code) to query the server with your audio data.
-
-## Method 2: using the `predict_audio.py` script
-
-1. Clone the repo
-2. `cd /path/to/repo/vadnet-pkg`
-3. Make a virtualenv and `pip install -r requirements.txt` (WARNING: this will install tensorflow==1.15, which may overwrite an existing installation of TF)
-4. Install the `vadnet` package `pip install -e .`
-5. Run `python predict_audio.py /path/to/wavfile.wav`
-
-You can use the other checkpoints to predict gender or laughter if you like, e.g. usage:
-
-`python predict_audio.py /path/to/wavfile.wav --ckpt models/gender/model.ckpt-675023`
+**Original Readme by hcmlab:**
 
 # VadNet
 VadNet is a real-time voice activity detector for noisy enviroments. It implements an end-to-end learning approach based on Deep Neural Networks. In the extended version, gender and laughter detection are added. To see a demonstration click on the images below.
