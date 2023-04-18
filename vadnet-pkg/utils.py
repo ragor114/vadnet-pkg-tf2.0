@@ -3,7 +3,7 @@ import os
 import librosa as lr
 
 
-def audio_from_file(path, sr=48000, offset=0.0, duration=None):
+def audio_from_file(path: str, sr: int = 48000, offset: float = 0.0, duration: float = None) -> np.array:
     try:
         audio, _ = lr.load(
             path,
@@ -24,7 +24,7 @@ def audio_from_file(path, sr=48000, offset=0.0, duration=None):
         return None
 
 
-def audio_to_frames(x, n_frame, n_step=None):
+def audio_to_frames(x: np.array, n_frame: int, n_step: int = None) -> np.array:
     if n_step is None:
         n_step = n_frame
     if len(x.shape) == 1:

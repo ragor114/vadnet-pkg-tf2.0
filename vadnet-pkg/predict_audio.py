@@ -5,7 +5,7 @@ import tensorflow as tf
 from tensorflow.python import pywrap_tensorflow
 import numpy as np
 import librosa as lr
-import vadnet.utils as utils
+import utils
 
 
 TARGET_SR = 48000
@@ -48,7 +48,7 @@ class Predictor:
         self.sess = tf.Session()
         self.saver.restore(self.sess, checkpoint_path)
 
-    def run(self, audio_array: np.array, n_batch: int = 1, granularity: float = None) -> np.array:
+    def run(self, audio_array: np.array, n_batch: int = 1, granularity: int = None) -> np.array:
         result = [
             np.empty([0] + x.shape[1:].as_list(), dtype=np.float32)
             for x in self.layers
@@ -97,7 +97,7 @@ class Predictor:
     def run_from_array(self,
                        audio: np.array,
                        n_batch: int = 1,
-                       granularity: float = None,
+                       granularity: int = None,
                        original_sr: int = 48000
                        ) -> np.array:
         if original_sr != TARGET_SR:
