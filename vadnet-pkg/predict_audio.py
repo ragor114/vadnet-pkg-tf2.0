@@ -8,6 +8,8 @@ import librosa as lr
 import vadnet.utils as utils
 
 
+TARGET_SR = 48000
+
 DEFAULT_CKPT_PATH = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "models/vad/model.ckpt-200106"
 )
@@ -17,7 +19,7 @@ class Predictor:
     def __init__(
         self,
         checkpoint_path: str = DEFAULT_CKPT_PATH,
-        additional_layer_names=None,
+        additional_layer_names: list = None,
     ):
         self.checkpoint_path = checkpoint_path
         self.checkpoint_dir = os.path.split(checkpoint_path)[0]
@@ -46,7 +48,7 @@ class Predictor:
         self.sess = tf.Session()
         self.saver.restore(self.sess, checkpoint_path)
 
-    def run(self, audio_array, n_batch=1, granularity=None):
+    def run(self, audio_array: np.array, n_batch: int = 1, granularity: float = None) -> np.array:
         result = [
             np.empty([0] + x.shape[1:].as_list(), dtype=np.float32)
             for x in self.layers
@@ -84,8 +86,22 @@ class Predictor:
                 break
         return result
 
-    def run_from_file(self, audio_path, n_batch=1, granularity=None):
-        audio = utils.audio_from_file(audio_path, 48000)
+    def run_from_file(self,
+                      audio_path: str,
+                        n_batch: int = 1,
+                      granularity: int = None
+                      ) -> np.array:
+        audio = utils.audio_from_file(audio_path, TARGET_SR)
+        return self.run(audio, n_batch, granularity)
+
+    def run_from_array(self,
+                       audio: np.array,
+                       n_batch: int = 1,
+                       granularity: float = None,
+                       original_sr: int = 48000
+                       ) -> np.array:
+        if original_sr != TARGET_SR:
+            audio = lr.resample(audio, orig_sr=original_sr, target_sr=TARGET_SR)
         return self.run(audio, n_batch, granularity)
 
 
